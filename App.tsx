@@ -10,6 +10,7 @@
 
 import React from 'react';
 import {
+    Alert,
     SafeAreaView,
     ScrollView,
     StatusBar,
@@ -45,6 +46,14 @@ const App = () => {
         }
     ];
 
+    const signUp = (label: string) => {
+        Alert.alert(label)
+    }
+
+    const login = (label: string) => {
+        Alert.alert(label)
+    }
+
     return (
         <SafeAreaView style={{backgroundColor: 'white'}}>
             <View style={{marginTop: 50}}>
@@ -63,8 +72,8 @@ const App = () => {
                             <CustomInput key={index} label={input.title} placeholder={input.placeholder} isEmail={input.isEmail}/>
                         ))
                     }
-                    <CustomButton label={'SignUp'} colorCode={orangeColor}/>
-                    <CustomButton label={'Login'} colorCode={'#F8B55D'}/>
+                    <CustomButton label={'SignUp'} colorCode={orangeColor} onPress={(val: string) => signUp(val)}/>
+                    <CustomButton label={'Login'} colorCode={'#F8B55D'} onPress={(val: string) => login(val)}/>
                 </View>
             </View>
         </SafeAreaView>
