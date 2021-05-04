@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {StyleSheet, Text, useColorScheme, View} from "react-native";
 import {Colors} from "react-native/Libraries/NewAppScreen";
 
@@ -7,6 +7,16 @@ const Section: React.FC<{
     description?: string;
 }> = ({children, title, description}) => {
     const isDarkMode = useColorScheme() === 'dark';
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            console.log(Math.random());
+        }, 1000)
+        return () => {
+            clearInterval(interval);
+        }
+    }, [])
+
     return (
         <View style={styles.sectionContainer}>
             <Text
@@ -25,7 +35,7 @@ const Section: React.FC<{
                         color: 'red'
                     },
                 ]}>
-                {title}
+                {description}
             </Text>
             <Text
                 style={[
