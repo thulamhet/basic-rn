@@ -5,17 +5,9 @@ import {Colors} from "react-native/Libraries/NewAppScreen";
 const Section: React.FC<{
     title?: string;
     description?: string;
-}> = ({children, title, description}) => {
+    data?: any[];
+}> = ({children, title, description, data}) => {
     const isDarkMode = useColorScheme() === 'dark';
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            console.log(Math.random());
-        }, 1000)
-        return () => {
-            clearInterval(interval);
-        }
-    }, [])
 
     return (
         <View style={styles.sectionContainer}>
@@ -71,4 +63,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default Section;
+export default React.memo(Section);
