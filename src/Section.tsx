@@ -1,12 +1,11 @@
-import React, {useEffect} from "react";
+import React from "react";
 import {StyleSheet, Text, useColorScheme, View} from "react-native";
 import {Colors} from "react-native/Libraries/NewAppScreen";
 
 const Section: React.FC<{
     title?: string;
     description?: string;
-    data?: any[];
-}> = ({children, title, description, data}) => {
+}> = ({children, title, description}) => {
     const isDarkMode = useColorScheme() === 'dark';
 
     return (
