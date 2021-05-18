@@ -1,27 +1,36 @@
 import * as React from 'react';
-import {  View, Text, TouchableOpacity } from 'react-native';
-import CustomBox from './customBox';
+import { useState } from 'react';
+import { useContext } from 'react';
+import {  View, Text, TouchableOpacity, SafeAreaView, Button, Dimensions } from 'react-native';
+import { TextInput } from 'react-native-gesture-handler';
+import { AnswerContext } from '../../App';
 
-let count1 : number = 1;
-export let state = {
-    c : 1 as number,
-    check : false as boolean
-}
-
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 const Home: React.FC<{navigation: any}> = ({navigation}) => {
+    const context = useContext(AnswerContext);
+    const {isLoggedIn, setLoggedIn} = context;
+    const [Email, setEmail] = useState("");
+    const [Password, setPassword] = useState("");
     return (
-        <View>
-            <Text style={{fontSize: 20, fontWeight: 'bold', margin: 20}}>1. Độ tuổi của quý khách</Text>
-            <CustomBox question='1. Từ 1 - 30 tuổi' numberCheck={count1}/>
-            <CustomBox question='2. Từ 31 - 40 tuổi' numberCheck={count1}/>
-            <CustomBox question='3. Từ 41 - 50 tuổi' numberCheck={count1}/>
-            <CustomBox question='4. Từ 51 - 60 tuổi' numberCheck={count1}/>
-            <CustomBox question='5. Trên 60 tuổi' numberCheck={count1}/>   
-            <TouchableOpacity  disabled={state.check} style={{width: 50, height: 50, marginLeft: 200, marginBottom: 10, backgroundColor: 'black'}} onPress={() => navigation.navigate('trang1')}>
-                <Text style={{color: 'white', justifyContent: 'center', alignItems:'center', margin: 10}}>Next</Text>
-            </TouchableOpacity>              
-        </View>
+        <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
+          <Text style={{fontSize: 20, fontWeight: 'bold', marginLeft: 160}}>Sign in</Text>
+          <View style={{margin: 20}}>
+            <Text>Email ID</Text>
+            <TextInput onChangeText={setEmail} style={{marginTop: 10, borderWidth: 0.6, borderRadius: 8, marginBottom: 20}} placeholder='Enter your email here'/>
+            <Text>Password</Text>
+            <TextInput secureTextEntry={true} onChangeText={setPassword} style={{marginBottom: 20,marginTop: 10, borderWidth: 0.6, borderRadius: 8}} placeholder='Enter your password here'/>
+            <Button 
+              disabled={Email=="" || Password==""}
+              title='Sign In'
+              color='#d68a27'
+              onPress={() => {
+                setLoggedIn(true);
+              }}
+            />
+          </View>
+        </SafeAreaView>
     );
     
 }
