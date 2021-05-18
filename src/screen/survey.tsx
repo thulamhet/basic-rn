@@ -1,7 +1,7 @@
 import React, {useState, useContext} from 'react';
 import {View, Text, Button, TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {AnswerContext} from '../../App';
+import {AnswerContext} from "../AppNavigation";
 
 const data = [
   '1. Từ 1 - 30 tuổi',
@@ -15,7 +15,7 @@ const Survey: React.FC = () => {
   const navigation = useNavigation();
   const context = useContext(AnswerContext);
   const {answers} = context;
-  const {survey1Answer} = answers;
+  const {survey1Answer} = answers as any;
   const {setAnswers} = context;
   const handleCheckBox = (arrange: number) => {
     const isChecked = survey1Answer.find(item => item === data[arrange]);
@@ -27,7 +27,7 @@ const Survey: React.FC = () => {
       //option was chosen
       setAnswers({
         ...answers,
-        survey1Answer: answers => answers.filter(item => item != data[arrange]),
+        survey1Answer: survey1Answer.filter(item => item != data[arrange]),
       });
     }
   };

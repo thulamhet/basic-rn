@@ -7,13 +7,15 @@ type CustomInputProps = {
   placeholder: string;
   isEmail?: boolean;
   value?: string;
+  onChange?: (val: string) => void;
 };
 
 const CustomInput: React.FC<CustomInputProps> = ({
   label,
   placeholder,
-  isEmail,
   value,
+  onChange,
+
 }) => {
   return (
     <View style={{marginVertical: 5}}>
@@ -21,6 +23,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
       <TextInput
         value={value}
         placeholder={placeholder}
+        onChangeText={onChange}
         style={{
           borderWidth: 0.5,
           borderColor: '#D0D0D0',
@@ -28,16 +31,6 @@ const CustomInput: React.FC<CustomInputProps> = ({
           borderRadius: 5,
         }}
       />
-      {isEmail && (
-        <Text
-          style={{
-            textAlign: 'right',
-            color: orangeColor,
-            textDecorationLine: 'underline',
-          }}>
-          Register with phone number
-        </Text>
-      )}
     </View>
   );
 };

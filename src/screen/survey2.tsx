@@ -1,7 +1,7 @@
 import React, {useState, useContext} from 'react';
 import {View, Text, Button, TouchableOpacity} from 'react-native';
 import {useNavigation, useRoute} from '@react-navigation/native';
-import {AnswerContext} from "../../App";
+import {AnswerContext} from "../AppNavigation";
 
 const data = [
     '1. dưới 10 triệu',
@@ -26,7 +26,7 @@ const Survey2: React.FC = () => {
             //option was chosen
             setAnswers({
                 ...answers,
-                survey2Answer: answers => answers.filter(item => item != data[arrange]),
+                survey2Answer: survey2Answer.filter(item => item != data[arrange]),
             });
         }
     };
