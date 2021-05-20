@@ -37,6 +37,15 @@ const AppNavigation: React.FC = () => {
       .catch(e => console.log(e));
   }, []);
 
+  useEffect(() => {
+    AsyncStorage.getItem('answers').then(storage => {
+      if (storage) {
+        const answer = JSON.parse(storage);
+        setAnswers(answer);
+      }
+    });
+  }, []);
+
   return (
     <AnswerContext.Provider
       value={{

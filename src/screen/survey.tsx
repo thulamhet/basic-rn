@@ -1,7 +1,8 @@
 import React, {useState, useContext} from 'react';
 import {View, Text, Button, TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {AnswerContext} from "../AppNavigation";
+import {AnswerContext} from '../AppNavigation';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const data = [
   '1. Từ 1 - 30 tuổi',
@@ -19,17 +20,24 @@ const Survey: React.FC = () => {
   const {setAnswers} = context;
   const handleCheckBox = (arrange: number) => {
     const isChecked = survey1Answer.find(item => item === data[arrange]);
+    let updatedAnswers = {};
     if (!isChecked) {
       //option not chosen
       const array = [...survey1Answer, data[arrange]];
-      setAnswers({...answers, survey1Answer: array});
+      updatedAnswers = {...answers, survey1Answer: array};
+
     } else {
       //option was chosen
-      setAnswers({
+      updatedAnswers = {
         ...answers,
         survey1Answer: survey1Answer.filter(item => item != data[arrange]),
-      });
+      };
     }
+      AsyncStorage.setItem('answers', JSON.stringify(updatedAnswers)).then(
+          () => {
+              setAnswers(updatedAnswers);
+          },
+      );
   };
 
   return (
