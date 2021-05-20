@@ -26,13 +26,15 @@ const AppNavigation: React.FC = () => {
   const user = useContext(UserContext);
 
   useEffect(() => {
-      AsyncStorage.getItem('userName').then((value) => {
-          console.log(value);
-          user.setUser({
-              name: value,
-              password: ''
-          });
-      }).catch((e) => console.log(e))
+    AsyncStorage.getItem('userName')
+      .then(value => {
+        console.log(value);
+        user.setUser({
+          name: value,
+          password: '',
+        });
+      })
+      .catch(e => console.log(e));
   }, []);
 
   return (
@@ -47,8 +49,8 @@ const AppNavigation: React.FC = () => {
             <Stack.Screen name="Login" component={Login} />
           ) : (
             <>
-              <Stack.Screen name="Home" component={Home} />
               <Stack.Screen name="Survey" component={Survey} />
+              <Stack.Screen name="Home" component={Home} />
               <Stack.Screen name="Survey2" component={Survey2} />
               <Stack.Screen name="Answers" component={Answers} />
             </>
