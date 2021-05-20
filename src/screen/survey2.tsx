@@ -1,7 +1,6 @@
 import React, {useState, useContext} from 'react';
 import {View, Text, Button, TouchableOpacity} from 'react-native';
 import {useNavigation, useRoute} from '@react-navigation/native';
-import {AnswerContext} from '../AppNavigation';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const data = [
@@ -13,26 +12,22 @@ const data = [
 
 const Survey2: React.FC = () => {
   const navigation = useNavigation();
-  const context = useContext(AnswerContext);
-  const {answers} = context;
-  const {survey2Answer} = answers;
-  const {setAnswers} = context;
   const handleCheckBox = (arrange: number) => {
-    const isChecked = survey2Answer.find(item => item === data[arrange]);
-    let updatedAnswer = {};
-    if (!isChecked) {
-      //option not chosen
-      const array = [...survey2Answer, data[arrange]];
-      updatedAnswer = {...answers, survey2Answer: array};
-    } else {
-      updatedAnswer = {
-        ...answers,
-        survey2Answer: survey2Answer.filter(item => item != data[arrange]),
-      };
-    }
-    AsyncStorage.setItem('answers', JSON.stringify(updatedAnswer)).then(() => {
-      setAnswers(updatedAnswer);
-    });
+    // const isChecked = survey2Answer.find(item => item === data[arrange]);
+    // let updatedAnswer = {};
+    // if (!isChecked) {
+    //   //option not chosen
+    //   const array = [...survey2Answer, data[arrange]];
+    //   updatedAnswer = {...answers, survey2Answer: array};
+    // } else {
+    //   updatedAnswer = {
+    //     ...answers,
+    //     survey2Answer: survey2Answer.filter(item => item != data[arrange]),
+    //   };
+    // }
+    // AsyncStorage.setItem('answers', JSON.stringify(updatedAnswer)).then(() => {
+    //   setAnswers(updatedAnswer);
+    // });
   };
 
   return (
@@ -41,7 +36,8 @@ const Survey2: React.FC = () => {
       <Text>thu nhập của quý khách:</Text>
       <View>
         {data.map((item, index) => {
-          const isChecked = survey2Answer.find(item => item === data[index]);
+          // const isChecked = survey2Answer.find(item => item === data[index]);
+          const isChecked = false;
           return (
             <View
               key={index}
@@ -72,10 +68,7 @@ const Survey2: React.FC = () => {
           title="Next"
           color="green"
           onPress={() =>
-            navigation.navigate('Answers', {
-              survey2Answer,
-              survey2Answer: answers,
-            })
+            navigation.navigate('Answers')
           }
         />
       </View>

@@ -8,21 +8,12 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {UserContext} from './context/UserContext';
 import Home from './screen/Home';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {Provider} from 'react-redux';
+import store from './redux/store';
 
 const Stack = createStackNavigator();
 
-const initialValue = {
-  survey1Answer: [],
-  survey2Answer: [],
-};
-
-export const AnswerContext = createContext({
-  answers: {},
-  setAnswers: (data: any) => {},
-});
-
 const AppNavigation: React.FC = () => {
-  const [answers, setAnswers] = useState(initialValue);
   const user = useContext(UserContext);
 
   useEffect(() => {
@@ -37,22 +28,9 @@ const AppNavigation: React.FC = () => {
       .catch(e => console.log(e));
   }, []);
 
-  useEffect(() => {
-    AsyncStorage.getItem('answers').then(storage => {
-      if (storage) {
-        const answer = JSON.parse(storage);
-        setAnswers(answer);
-      }
-    });
-  }, []);
-
   return (
-    <AnswerContext.Provider
-      value={{
-        answers,
-        setAnswers,
-      }}>
-      <NavigationContainer>
+    <NavigationContainer>
+      <Provider store={store}>
         <Stack.Navigator>
           {!user?.user?.name ? (
             <Stack.Screen name="Login" component={Login} />
@@ -65,8 +43,8 @@ const AppNavigation: React.FC = () => {
             </>
           )}
         </Stack.Navigator>
-      </NavigationContainer>
-    </AnswerContext.Provider>
+      </Provider>
+    </NavigationContainer>
   );
 };
 

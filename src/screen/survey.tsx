@@ -1,8 +1,9 @@
 import React, {useState, useContext} from 'react';
 import {View, Text, Button, TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {AnswerContext} from '../AppNavigation';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {connect} from 'react-redux';
+import {changeAnswer} from "../redux/action/answerAction";
 
 const data = [
   '1. Từ 1 - 30 tuổi',
@@ -12,12 +13,9 @@ const data = [
   '5. Trên 60 tuổi',
 ];
 
-const Survey: React.FC = () => {
+const Survey: React.FC<{answers: any, changeAnswer: (data: any) => void}> = ({answers, changeAnswer}) => {
+  const {survey1Answer} = answers;
   const navigation = useNavigation();
-  const context = useContext(AnswerContext);
-  const {answers} = context;
-  const {survey1Answer} = answers as any;
-  const {setAnswers} = context;
   const handleCheckBox = (arrange: number) => {
     const isChecked = survey1Answer.find(item => item === data[arrange]);
     let updatedAnswers = {};
@@ -25,7 +23,6 @@ const Survey: React.FC = () => {
       //option not chosen
       const array = [...survey1Answer, data[arrange]];
       updatedAnswers = {...answers, survey1Answer: array};
-
     } else {
       //option was chosen
       updatedAnswers = {
@@ -33,11 +30,9 @@ const Survey: React.FC = () => {
         survey1Answer: survey1Answer.filter(item => item != data[arrange]),
       };
     }
-      AsyncStorage.setItem('answers', JSON.stringify(updatedAnswers)).then(
-          () => {
-              setAnswers(updatedAnswers);
-          },
-      );
+    AsyncStorage.setItem('answers', JSON.stringify(updatedAnswers)).then(() => {
+      changeAnswer(updatedAnswers);
+    });
   };
 
   return (
@@ -76,15 +71,15 @@ const Survey: React.FC = () => {
         <Button
           title="Next"
           color="green"
-          onPress={() =>
-            navigation.navigate('Survey2', {
-              arrSurvey: answers,
-            })
-          }
+          onPress={() => navigation.navigate('Survey2')}
         />
       </View>
     </View>
   );
 };
 
-export default Survey;
+const mapStateToProps = (state: any) => {
+  const {answerReducer} = state;
+  return {answers: answerReducer};
+};
+export default connect(mapStateToProps, {changeAnswer: changeAnswer})(Survey);
