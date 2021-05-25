@@ -10,17 +10,14 @@
 
 import React from 'react';
 import {SafeAreaView} from 'react-native';
-import UserProvider from './src/context/UserContext';
-import AppNavigation from "./src/AppNavigation";
+import AppNavigation from './src/AppNavigation';
 
 export const orangeColor = '#E7421B';
 
 const App = () => {
-    return (
+  return (
     <SafeAreaView style={{backgroundColor: 'white', flex: 1}}>
-      <UserProvider>
-        <AppNavigation />
-      </UserProvider>
+      <AppNavigation />
     </SafeAreaView>
   );
 };

@@ -10,7 +10,6 @@ const Answers: React.FC<{answers: any; resetAnswer: Function}> = ({
   resetAnswer,
 }) => {
   const navigation = useNavigation();
-    console.log(answers);
     return (
     <View>
       <View>
