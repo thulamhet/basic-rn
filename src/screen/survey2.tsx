@@ -2,6 +2,8 @@ import React, {useState, useContext} from 'react';
 import {View, Text, Button, TouchableOpacity} from 'react-native';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {connect} from 'react-redux';
+import {changeAnswer} from '../redux/action/answerAction';
 
 const data = [
   '1. dưới 10 triệu',
@@ -10,34 +12,39 @@ const data = [
   '5. Trên 100 triệu',
 ];
 
-const Survey2: React.FC = () => {
+const Survey2: React.FC<{answers: any; changeAnswer: (data: any) => void}> = ({
+  answers,
+  changeAnswer,
+}) => {
+  const {survey2Answer} = answers;
   const navigation = useNavigation();
+
   const handleCheckBox = (arrange: number) => {
-    // const isChecked = survey2Answer.find(item => item === data[arrange]);
-    // let updatedAnswer = {};
-    // if (!isChecked) {
-    //   //option not chosen
-    //   const array = [...survey2Answer, data[arrange]];
-    //   updatedAnswer = {...answers, survey2Answer: array};
-    // } else {
-    //   updatedAnswer = {
-    //     ...answers,
-    //     survey2Answer: survey2Answer.filter(item => item != data[arrange]),
-    //   };
-    // }
-    // AsyncStorage.setItem('answers', JSON.stringify(updatedAnswer)).then(() => {
-    //   setAnswers(updatedAnswer);
-    // });
+    const isChecked = survey2Answer.find(item => item === data[arrange]);
+    let updatedAnswers = {};
+    if (!isChecked) {
+      //option not chosen
+      const array = [...survey2Answer, data[arrange]];
+      updatedAnswers = {...answers, survey2Answer: array};
+    } else {
+      //option was chosen
+      updatedAnswers = {
+        ...answers,
+        survey2Answer: survey2Answer.filter(item => item != data[arrange]),
+      };
+    }
+    AsyncStorage.setItem('answers', JSON.stringify(updatedAnswers)).then(() => {
+      changeAnswer(updatedAnswers);
+    });
   };
 
   return (
     <View style={{flex: 1}}>
-      <Text style={{textAlign: 'center'}}>Câu 1:</Text>
+      <Text style={{textAlign: 'center'}}>Câu 2:</Text>
       <Text>thu nhập của quý khách:</Text>
       <View>
         {data.map((item, index) => {
-          // const isChecked = survey2Answer.find(item => item === data[index]);
-          const isChecked = false;
+          const isChecked = survey2Answer.find(item => item === data[index]);
           return (
             <View
               key={index}
@@ -67,13 +74,15 @@ const Survey2: React.FC = () => {
         <Button
           title="Next"
           color="green"
-          onPress={() =>
-            navigation.navigate('Answers')
-          }
+          onPress={() => navigation.navigate('Answers')}
         />
       </View>
     </View>
   );
 };
 
-export default Survey2;
+const mapStateToProps = (state: any) => {
+  const {answerReducer} = state;
+  return {answers: answerReducer};
+};
+export default connect(mapStateToProps, {changeAnswer: changeAnswer})(Survey2);
