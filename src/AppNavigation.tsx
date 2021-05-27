@@ -5,34 +5,20 @@ import Survey from './screen/survey';
 import Survey2 from './screen/survey2';
 import Answers from './screen/Answers';
 import {createStackNavigator} from '@react-navigation/stack';
-import {UserContext} from './context/UserContext';
+
 import Home from './screen/Home';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {Provider} from 'react-redux';
+import {connect, Provider} from 'react-redux';
 import store from './redux/store';
+import { changeUser } from './redux/action/userAction';
 
 const Stack = createStackNavigator();
 
-const AppNavigation: React.FC = () => {
-  const user = useContext(UserContext);
-
-  useEffect(() => {
-    AsyncStorage.getItem('userName')
-      .then(value => {
-        console.log(value);
-        user.setUser({
-          name: value,
-          password: '',
-        });
-      })
-      .catch(e => console.log(e));
-  }, []);
-
+const AppNavigation: React.FC<{user: any; changeUser: (data: any) => void}> = (user, changeUser) => {
   return (
     <NavigationContainer>
-      <Provider store={store}>
         <Stack.Navigator>
-          {!user?.user?.name ? (
+          {!user?.user?.username ? (
             <Stack.Screen name="Login" component={Login} />
           ) : (
             <>
@@ -43,9 +29,12 @@ const AppNavigation: React.FC = () => {
             </>
           )}
         </Stack.Navigator>
-      </Provider>
     </NavigationContainer>
   );
 };
 
-export default AppNavigation;
+const mapStateToProps = (state: any) => {
+  const {userReducer} = state;
+  return {user: userReducer};
+};
+export default connect(mapStateToProps, {changeUser: changeUser})(AppNavigation);

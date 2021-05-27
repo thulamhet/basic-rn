@@ -8,6 +8,9 @@ import {Controller, useForm} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { connect } from 'react-redux';
+import { changeAnswer } from '../redux/action/answerAction';
+import { changeUser } from '../redux/action/userAction';
 
 const schema = yup.object().shape({
   name: yup.string().required(),
@@ -19,8 +22,7 @@ interface IFormInputs {
   password: string;
 }
 
-const Login: React.FC = () => {
-  const user = useContext(UserContext);
+const Login: React.FC<{user: any, changeUser: (data: any) => void}> = ({user, changeUser}) => {
   const {
     control,
     handleSubmit,
@@ -31,8 +33,11 @@ const Login: React.FC = () => {
 
   const submit = async (data: any) => {
     try {
-      await AsyncStorage.setItem('userName', data.name);
-      user.setUser(data);
+      await AsyncStorage.setItem('username', data.name);
+      changeUser({
+        username: data.name,
+        password: data.password,
+      })
     } catch (e) {
       console.log(e);
     }
@@ -78,4 +83,8 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+const mapStateToProps = (state: any) => {
+  const {userReducer} = state;
+  return {user: userReducer};
+};
+export default connect(mapStateToProps, {changeUser: changeUser})(Login);

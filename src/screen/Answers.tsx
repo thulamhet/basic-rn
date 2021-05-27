@@ -1,13 +1,16 @@
 import React from 'react';
-import {Text, View} from 'react-native';
+import {Button, Text, View} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
 import {connect} from 'react-redux';
 import {changeAnswer, resetAnswer} from '../redux/action/answerAction';
+import {changeUser, resetUser} from '../redux/action/userAction';
 
-const Answers: React.FC<{answers: any; resetAnswer: Function}> = ({
+const Answers: React.FC<{answers: any; user: any; resetAnswer: Function; resetUser: Function}> = ({
   answers,
   resetAnswer,
+  user,
+  resetUser,
 }) => {
   const navigation = useNavigation();
     return (
@@ -18,6 +21,16 @@ const Answers: React.FC<{answers: any; resetAnswer: Function}> = ({
         <Text>{answers.survey1Answer.join(',')}</Text>
         <Text>survey2 : </Text>
         <Text>{answers.survey2Answer.join(',')}</Text>
+        <Button
+          title='log out'
+          onPress={()=> {
+            
+            resetUser();
+            console.log(user)
+            
+          }}
+
+        />
       </View>
       <Text
         onPress={() => {
@@ -33,7 +46,8 @@ const Answers: React.FC<{answers: any; resetAnswer: Function}> = ({
 };
 
 const mapStateToProps = (state: any) => {
-  const {answerReducer} = state;
-  return {answers: answerReducer};
+  const {answerReducer, userReducer} = state;
+  return {answers: answerReducer, user: userReducer};
 };
-export default connect(mapStateToProps, {resetAnswer: resetAnswer})(Answers);
+
+export default connect(mapStateToProps, {resetAnswer: resetAnswer, resetUser: resetUser})(Answers);

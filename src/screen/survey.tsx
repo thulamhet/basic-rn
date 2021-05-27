@@ -30,7 +30,12 @@ const Survey: React.FC<{answers: any, changeAnswer: (data: any) => void}> = ({an
         survey1Answer: survey1Answer.filter(item => item != data[arrange]),
       };
     }
-    changeAnswer(updatedAnswers);
+    /**
+     * ! HERE
+     */
+     AsyncStorage.setItem('answers', JSON.stringify(updatedAnswers)).then(() => {
+      changeAnswer(updatedAnswers);
+    });
   };
 
   return (

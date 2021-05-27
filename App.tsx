@@ -12,15 +12,17 @@ import React from 'react';
 import {SafeAreaView} from 'react-native';
 import UserProvider from './src/context/UserContext';
 import AppNavigation from "./src/AppNavigation";
+import { Provider } from 'react-redux';
+import store from './src/redux/store';
 
 export const orangeColor = '#E7421B';
 
 const App = () => {
     return (
     <SafeAreaView style={{backgroundColor: 'white', flex: 1}}>
-      <UserProvider>
+     <Provider store={store}>
         <AppNavigation />
-      </UserProvider>
+      </Provider>
     </SafeAreaView>
   );
 };
