@@ -32,6 +32,5 @@ const Home: React.FC<{navigation: any}> = ({navigation}) => {
           </View>
         </SafeAreaView>
     );
-    
 }
 export default Home;

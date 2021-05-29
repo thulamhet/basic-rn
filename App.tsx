@@ -19,26 +19,26 @@ export const AnswerContext = createContext({
 
 function App() {
   const [isLoggedIn, setLoggedIn] = useState(false);
-  if(!isLoggedIn)
     return (
       <AnswerContext.Provider value={{isLoggedIn, setLoggedIn}}>
         <NavigationContainer>
-          <Stack.Navigator>
-            <Stack.Screen name=" " component={HomeScreen} />
-          </Stack.Navigator>
+          {isLoggedIn ? (
+              <Stack.Navigator>
+              <Stack.Screen name=" " component={HomeScreen} />
+              </Stack.Navigator>
+            ) : (
+              <>
+                <Tab.Navigator>
+                  <Tab.Screen name="Explorer" component={Explorer} /> 
+                  <Tab.Screen name="Account" component={Account} />
+                </Tab.Navigator>
+              </>
+            )
+          }
         </NavigationContainer>
       </AnswerContext.Provider>
     );
-  return (
-    <AnswerContext.Provider value={{isLoggedIn, setLoggedIn}}>
-      <NavigationContainer>
-        <Tab.Navigator>
-          <Tab.Screen name="Explorer" component={Explorer} /> 
-          <Tab.Screen name="Account" component={Account} />
-        </Tab.Navigator>
-      </NavigationContainer>
-    </AnswerContext.Provider>
-  );
+
 }
 
 export default App;
