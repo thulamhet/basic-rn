@@ -8,7 +8,9 @@ import HomeScreen from "./src/screen/HomeScreen";
 import Explorer from "./src/screen/Explorer";
 import Account from "./src/screen/Account";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-
+import { Provider } from "react-redux";
+import store from './src/redux/store';
+import addItem from "./src/screen/addItem";
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator()
 
@@ -17,27 +19,30 @@ export const AnswerContext = createContext({
   setLoggedIn: (data: any) => {},
 });
 
-againagainagainagainagainagainagainagain
-
 function App() {
   const [isLoggedIn, setLoggedIn] = useState(false);
     return (
       <AnswerContext.Provider value={{isLoggedIn, setLoggedIn}}>
+        <Provider store={store}>
+
+        
         <NavigationContainer>
           {isLoggedIn ? (
               <Stack.Navigator>
               <Stack.Screen name=" " component={HomeScreen} />
               </Stack.Navigator>
             ) : (
-              <>
-                <Tab.Navigator>
-                  <Tab.Screen name="Explorer" component={Explorer} /> 
-                  <Tab.Screen name="Account" component={Account} />
-                </Tab.Navigator>
-              </>
+              
+                <Stack.Navigator>
+                  <Stack.Screen name="Explorer" component={Explorer} /> 
+                  <Stack.Screen name="Account" component={Account} />
+                  <Stack.Screen name="addItem" component={addItem} />
+                </Stack.Navigator>
+              
             )
           }
         </NavigationContainer>
+        </Provider>
       </AnswerContext.Provider>
     );
 

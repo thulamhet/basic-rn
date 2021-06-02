@@ -4,38 +4,51 @@ import { useEffect, useState } from 'react';
 import { ActivityIndicator, Alert, Button, Modal } from 'react-native';
 import {  View, Text, TouchableOpacity, SafeAreaView, TextInput, FlatList, Image } from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-const urlAPI = 'https://60b0a7c81f26610017ffed12.mockapi.io/api/food';
+const urlAPI = 'https://react-native-server-cuong.herokuapp.com/stores';
+import {connect, useDispatch, useSelector} from 'react-redux';
+import { getItem } from '../redux/action/itemAction';
+import itemReducer from '../redux/reducer/itemReducer';
+
 
 const Explorer: React.FC<{navigation: any}> = ({navigation}) => {
-  const [food, setFood] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [name, setName] = useState('')
-  const [price, setPrice] = useState('')
-  const [url, setUrl] = useState('')
-  const setAllState = () => {
-    setName('');
-    setPrice('');
-    setUrl('');
-  }
-  const getAPI = () => {
-    axios.get(urlAPI).then(res => {
-      setFood(res.data);
-      setLoading(false);
-    }).catch((e) => {
-      setLoading(false);
-      console.log(e);
-    }) 
-  }
-  useEffect(() => {
-    setLoading(true);
-    getAPI();
-  }, []);
+  // const [food, setFood] = useState([]);
+  // const [loading, setLoading] = useState(false);
+  // const [modalVisible, setModalVisible] = useState(false);
+  // const [name, setName] = useState('')
+  // const [price, setPrice] = useState('')
+  // const [url, setUrl] = useState('')
+  // const setAllState = () => {
+  //   setName('');
+  //   setPrice('');
+  //   setUrl('');
+  // }
+  // const getAPI = () => {
+  //   axios.get(urlAPI).then(res => {
+  //     changeItem(res.data)
+  //     setLoading(false);
+  //   }).catch((e) => {
+  //     setLoading(false);
+  //     console.log(e);
+  //   }) 
+  // }
+
  
-  if (loading) return (<ActivityIndicator size="large" color="#00ff00" />)
+    // setLoading(true);
+    // getAPI();
+  const reducer = useSelector((state: any) => state?.itemReducer);
+  console.log(reducer)
+  const {items} = reducer;
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getItem());
+  }, []);
+  
+ 
+ 
+  // if (loading) return (<ActivityIndicator size="large" color="#00ff00" />)
   return (
     <SafeAreaView style={{flex: 1}}>
-      <Modal
+      {/* <Modal
         animationType="slide"
         visible={modalVisible}
         onRequestClose={() => {
@@ -82,7 +95,9 @@ const Explorer: React.FC<{navigation: any}> = ({navigation}) => {
               <FontAwesome5 name={'window-close'} size={25} style={{color: 'black', borderRadius: 8, margin: 10}} solid/>
             </TouchableOpacity>
           </View>
-      </Modal>
+      </Modal> */}
+      
+        
         
       <View style={{backgroundColor:"white"}}>
       {/* <FontAwesome5 name={'plus'} size={32} style={{}} solid/>
@@ -91,16 +106,23 @@ const Explorer: React.FC<{navigation: any}> = ({navigation}) => {
       </View>
       <TextInput style={{backgroundColor:'white', borderRadius: 8, margin: 10, width: 350, height: 50}} placeholder="Search for meals or area"/>     
       <TouchableOpacity style={{width:50, marginLeft: 20}} onPress={() => {
-        setModalVisible(true)
+        // setModalVisible(true)
       }}>
         <FontAwesome5 name={'user-plus'} size={25} style={{color: 'black', borderRadius: 8, margin: 10}} solid/>
       </TouchableOpacity>
+
+      <Button
+        title='add'
+        onPress={()=> {
+          navigation.navigate('addItem');
+        }}
+      />
       
       <FlatList
-        data={food}
+        data={items}
         renderItem={({item}) => (
           <View style={{margin: 20, flexDirection:'row', borderWidth: 3, borderColor: 'gray', borderRadius:8}}>
-            <Image style={{width: 155, height: 110}} source={{uri: item.url}}/>
+            <Image style={{width: 160, height: 133, borderRadius: 8}} source={{uri: item.url}}/>
             <View style={{marginLeft: 20, margin: 30, width: 100}}>
               <Text style={{fontSize: 20, color: 'red'}}>{item.name}</Text>
               <Text style={{fontWeight:'bold'}}>${item.price}</Text>
@@ -109,7 +131,7 @@ const Explorer: React.FC<{navigation: any}> = ({navigation}) => {
               axios.delete(`https://60b0a7c81f26610017ffed12.mockapi.io/api/food/${item.id}`).then(()=> {
                 console.log('success')
               }).catch(error => console.log(error))
-              getAPI();
+              // getAPI();
             }}>
               <FontAwesome5 name={'trash'} size={25} style={{color: 'black', borderRadius: 8, margin: 10}} solid/>
             </TouchableOpacity>
@@ -121,7 +143,9 @@ const Explorer: React.FC<{navigation: any}> = ({navigation}) => {
   );
   
 }
-export default Explorer;
+
+export default Explorer
+
 
 /**
  * ? 'https://i.pinimg.com/736x/3b/74/bc/3b74bca401101300aba962b2d867a209.jpg'
