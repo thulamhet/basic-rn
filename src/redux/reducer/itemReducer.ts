@@ -1,4 +1,4 @@
-import {GET_ITEM} from "../action/itemAction";
+import {CHANGE_ITEM, GET_ITEM} from "../action/itemAction";
 
 const initialValue = {
   items: [],
@@ -10,6 +10,8 @@ export default function itemReducer(state = initialValue, action: any) {
           return {
             items: action.data
           }
+        case CHANGE_ITEM:
+          return action.payload
         default:
             return state;
     }

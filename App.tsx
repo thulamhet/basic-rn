@@ -11,8 +11,10 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Provider } from "react-redux";
 import store from './src/redux/store';
 import addItem from "./src/screen/addItem";
+import { QueryClient, QueryClientProvider } from "react-query";
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator()
+const queryClient = new QueryClient();
 
 export const AnswerContext = createContext({
   isLoggedIn: {},
@@ -23,6 +25,7 @@ function App() {
   const [isLoggedIn, setLoggedIn] = useState(false);
     return (
       <AnswerContext.Provider value={{isLoggedIn, setLoggedIn}}>
+        <QueryClientProvider client={queryClient}>
         <Provider store={store}>
 
         
@@ -43,6 +46,7 @@ function App() {
           }
         </NavigationContainer>
         </Provider>
+        </QueryClientProvider>
       </AnswerContext.Provider>
     );
 
